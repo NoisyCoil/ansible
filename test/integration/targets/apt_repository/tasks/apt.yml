@@ -324,14 +324,14 @@
 
 - name: Check if local apt repo file is a symlink
   stat:
-    path: /etc/apt/sources.list.d/local-apt-repository.list
+    path: /etc/apt/sources.list.d/local-apt-repository.sources
   register: stat_result
 
 - name: Assert if local apt repo file is a symlink
   assert:
     that:
       - stat_result.stat.islnk is defined and stat_result.stat.islnk
-      - stat_result.stat.lnk_source == "/usr/lib/local-apt-repository/local-apt-repository.list"
+      - stat_result.stat.lnk_source == "/usr/lib/local-apt-repository/local-apt-repository.sources"
 
 - name: Try installing an invalid repo
   apt_repository:
@@ -342,14 +342,14 @@
 
 - name: Check the stat for the given symlink
   stat:
-    path: /etc/apt/sources.list.d/local-apt-repository.list
+    path: /etc/apt/sources.list.d/local-apt-repository.sources
   register: stat_result2
 
 - name: Assert that the symlink is intact after apt_repository operation
   assert:
     that:
       - stat_result2.stat.islnk is defined and stat_result2.stat.islnk
-      - stat_result2.stat.lnk_source == "/usr/lib/local-apt-repository/local-apt-repository.list"
+      - stat_result2.stat.lnk_source == "/usr/lib/local-apt-repository/local-apt-repository.sources"
 
 - name: uninstall local-apt-repository with apt
   apt: pkg=local-apt-repository state=absent purge=yes
